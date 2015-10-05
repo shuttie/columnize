@@ -17,7 +17,7 @@ class ClientConnection(proxy:ActorRef) extends Actor with ActorLogging {
 
   def receive = {
     case Connected(remote, local) =>
-      log.debug("proxy-connected to server")
+      log.debug(s"proxy-connected to server $remote")
       val socket = sender()
       socket ! Register(self)
       context.become {
