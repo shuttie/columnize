@@ -5,7 +5,7 @@ import java.nio.ByteBuffer
 /**
  * Created by shutty on 10/5/15.
  */
-case class Frame(direction:Frame.Direction, version:Byte, flags:Flags, stream:Short, opcode:Byte, length:Int, body:ByteBuffer) {
+case class Frame(direction:Frame.Direction, version:Byte, flags:Flags, stream:Short, opcode:Opcode.OP, length:Int, body:ByteBuffer) {
 }
 
 object Frame {
@@ -26,7 +26,7 @@ object Frame {
       version = version,
       flags = Flags(buffer.get()),
       stream = buffer.getShort,
-      opcode = buffer.get(),
+      opcode = Opcode(buffer.get()),
       length = buffer.getInt,
       body = buffer.slice()
     )

@@ -2,7 +2,7 @@ package protocol
 
 import java.nio.ByteBuffer
 
-import com.github.romangrebennikov.columnize.protocol.{Flags, Frame}
+import com.github.romangrebennikov.columnize.protocol.{Opcode, Flags, Frame}
 import org.scalatest.{MustMatchers, WordSpecLike}
 
 /**
@@ -17,7 +17,7 @@ class FrameSpec extends WordSpecLike with MustMatchers {
     }
     "decode frame length" in {
       val len = ByteBuffer.wrap(Array(4,0,0,0,0,0,0,0,0).map(_.toByte))
-      assert(Frame(len) == Frame(Frame.Request, 4, Flags.empty, 0, 0, 0, ByteBuffer.allocate(0)))
+      assert(Frame(len) == Frame(Frame.Request, 4, Flags.empty, 0, Opcode.ERROR, 0, ByteBuffer.allocate(0)))
     }
     "allow large stream id" in {
       val buf = ByteBuffer.wrap(Array(4,0,127,127,0,0,0,0,0).map(_.toByte))
