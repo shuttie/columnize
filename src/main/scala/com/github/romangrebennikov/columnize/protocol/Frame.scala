@@ -2,10 +2,12 @@ package com.github.romangrebennikov.columnize.protocol
 
 import java.nio.ByteBuffer
 
+import com.github.romangrebennikov.columnize.protocol.body.Body
+
 /**
  * Created by shutty on 10/5/15.
  */
-case class Frame(direction:Frame.Direction, version:Byte, flags:Flags, stream:Short, opcode:Opcode.OP, length:Int, body:ByteBuffer) {
+case class Frame(direction:Frame.Direction, version:Byte, flags:Flags, stream:Short, opcode:Opcode.OP, length:Int, body:Body) {
 }
 
 object Frame {
@@ -21,14 +23,17 @@ object Frame {
       case false => Request
     }
     val version = (header & ~RESPONSE_FLAG).toByte
+    val flags = Flags(buffer.get())
+    val stream = buffer.getShort
+    val opcode = Opcode(buffer.get())
     new Frame(
       direction = direction,
       version = version,
-      flags = Flags(buffer.get()),
-      stream = buffer.getShort,
-      opcode = Opcode(buffer.get()),
+      flags = flags,
+      stream = stream,
+      opcode = opcode,
       length = buffer.getInt,
-      body = buffer.slice()
+      body = Body(opcode, buffer)
     )
   }
 }

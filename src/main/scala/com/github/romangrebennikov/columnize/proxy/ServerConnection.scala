@@ -17,10 +17,10 @@ class ServerConnection(proxy:ActorRef, socket:ActorRef) extends Actor with Actor
 
   def receive = {
     case Received(data) =>
-      log.debug(s"received $data")
+      //log.debug(s"received $data")
       proxy ! Request(data.asByteBuffer)
     case Response(data) =>
-      log.debug(s"proxying response $data back to client")
+      //log.debug(s"proxying response $data back to client")
       socket ! Write(ByteString(data))
     case PeerClosed =>
       log.info("connection closed")
