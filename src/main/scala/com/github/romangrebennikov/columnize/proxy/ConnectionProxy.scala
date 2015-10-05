@@ -11,10 +11,10 @@ class ConnectionProxy(val inputSocket:ActorRef) extends Actor with ActorLogging 
   val client = context.actorOf(Props(classOf[ClientConnection], self))
   def receive = {
     case req @ Request(data) =>
-      log.debug(Frame(data).toString)
+      //log.debug(Frame(data).toString)
       client ! req
     case res @ Response(data) =>
-      log.debug(Frame(data).toString)
+      //log.debug(Frame(data).toString)
       server ! res
   }
 }
