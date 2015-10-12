@@ -5,6 +5,7 @@ import java.net.InetSocketAddress
 import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.io.{IO, Tcp}
 import akka.util.ByteString
+import scala.concurrent.duration._
 
 /**
  * Created by shutty on 10/5/15.
@@ -30,6 +31,10 @@ class ClientConnection(proxy:ActorRef) extends Actor with ActorLogging {
         case e:Any =>
           log.warning(s"unknown message: $e")
       }
+    case req:Request =>
+      log.debug("delaying request for 100ms")
+      import context.dispatcher
+      context.system.scheduler.scheduleOnce(100.millis) { self ! req }
     case e:Any =>
       log.warning(s"unknown message: $e")
   }

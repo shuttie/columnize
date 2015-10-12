@@ -14,7 +14,8 @@ class ConnectionProxy(val inputSocket:ActorRef) extends Actor with ActorLogging 
       log.debug(Frame(data).toString)
       client ! req
     case res @ Response(data) =>
-      log.debug(Frame(data).toString)
+      val frame = Frame(data)
+      log.debug(frame.toString)
       server ! res
   }
 }

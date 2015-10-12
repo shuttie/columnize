@@ -15,3 +15,5 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.3"
 libraryDependencies += "com.datastax.cassandra" % "cassandra-driver-core" % "2.0.11"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.5" % "test"
+
+libraryDependencies += "joda-time" % "joda-time" % "2.8.2"
