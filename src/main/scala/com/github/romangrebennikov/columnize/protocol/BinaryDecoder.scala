@@ -8,6 +8,11 @@ import com.github.romangrebennikov.columnize.protocol.cql.types._
  * Created by shutty on 10/12/15.
  */
 trait BinaryDecoder {
+  def rawbytes(raw:ByteBuffer) = {
+    val buffer = new Array[Byte](raw.remaining())
+    raw.get(buffer, 0, raw.remaining())
+    buffer
+  }
   def cell(raw:ByteBuffer) = ByteBuffer.wrap(bytes(raw, raw.getInt))
   def bytes(raw:ByteBuffer) = {
     val length = raw.getShort

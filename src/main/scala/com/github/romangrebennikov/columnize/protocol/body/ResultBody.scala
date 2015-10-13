@@ -13,9 +13,9 @@ import com.github.romangrebennikov.columnize.protocol.cql.types.CQL
 case class ResultBody(content:Result) extends Body
 
 object ResultBody extends BinaryDecoder {
-  case class Flags(globalTablesSpec:Boolean = false, hasMorePages:Boolean = false, noMetadata:Boolean = false)
-  object Flags {
-    def apply(raw:Int) = new Flags(
+  case class ResultFlags(globalTablesSpec:Boolean = false, hasMorePages:Boolean = false, noMetadata:Boolean = false)
+  object ResultFlags {
+    def apply(raw:Int) = new ResultFlags(
       globalTablesSpec = isEnabled(raw, 0x0001),
       hasMorePages = isEnabled(raw, 0x0002),
       noMetadata = isEnabled(raw, 0x0004)
@@ -38,10 +38,10 @@ object ResultBody extends BinaryDecoder {
   }
 
 
-  case class Metadata(flags:Flags, columnsCount:Int, pagingState:Option[String], tableSpec:Option[TableSpec])
+  case class Metadata(flags:ResultFlags, columnsCount:Int, pagingState:Option[String], tableSpec:Option[TableSpec])
   object Metadata {
     def apply(raw:ByteBuffer) = {
-      val flags = Flags(raw.getInt)
+      val flags = ResultFlags(raw.getInt)
       val columnCount = raw.getInt
       new Metadata(
         flags = flags,
