@@ -4,7 +4,8 @@ import java.nio.ByteBuffer
 
 import com.github.romangrebennikov.columnize.protocol.BinaryDecoder
 import com.github.romangrebennikov.columnize.protocol.body.ResultBody.Result
-import com.github.romangrebennikov.columnize.protocol.cql.types.CQL
+import com.github.romangrebennikov.columnize.protocol.cql.types.{NullValue, CQL}
+import com.github.romangrebennikov.columnize.tools.Logging
 
 /**
  * Created by shutty on 10/6/15.
@@ -53,9 +54,16 @@ object ResultBody extends BinaryDecoder {
   }
 
   case class Row(columns:Seq[CQL.Value])
-  object Row extends BinaryDecoder {
+  object Row extends BinaryDecoder with Logging {
     def apply(raw:ByteBuffer, tableSpecOption: Option[TableSpec]) = tableSpecOption match {
-      case Some(tableSpec) => new Row(tableSpec.columns.map(_.xtype.deserialize(cell(raw))))
+      case Some(tableSpec) => new Row(tableSpec.columns.map( col => {
+        log.debug(s"Decoding ${col.xtype}(${col.name})")
+        val cellData = cell(raw)
+        if (cellData.remaining() > 0)
+          col.xtype.deserialize(cellData)
+        else
+          NullValue
+      }))
       case None => ???
     }
   }

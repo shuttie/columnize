@@ -7,7 +7,7 @@ import org.apache.commons.codec.binary.Hex
 /**
  * Created by shutty on 10/5/15.
  */
-class ConnectionProxy(val inputSocket:ActorRef) extends Actor with ActorLogging with BinaryDecoder {
+class ConnectionProxy(val inputSocket:ActorRef) extends Actor /*with ActorLogging*/ with BinaryDecoder {
   val server = context.actorOf(Props(classOf[ServerConnection], self, inputSocket))
   val client = context.actorOf(Props(classOf[ClientConnection], self))
   def receive = {

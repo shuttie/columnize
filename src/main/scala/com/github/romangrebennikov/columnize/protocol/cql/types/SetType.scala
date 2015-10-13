@@ -16,7 +16,8 @@ object SetValue extends BinaryDecoder {
   def apply(raw:ByteBuffer, inner:CQL.Type) = {
     val count = int(raw)
     val elements = for (i <- 0 until count) yield {
-      inner.deserialize(raw)
+      val cellBytes = cell(raw)
+      if (cellBytes.remaining() > 0) inner.deserialize(cellBytes) else NullValue
     }
     new SetValue(elements.toSet)
   }

@@ -3,17 +3,28 @@ package com.github.romangrebennikov.columnize.protocol
 import java.nio.ByteBuffer
 
 import com.github.romangrebennikov.columnize.protocol.cql.types._
+import com.github.romangrebennikov.columnize.tools.Logging
+import org.apache.commons.codec.binary.Hex
 
 /**
  * Created by shutty on 10/12/15.
  */
-trait BinaryDecoder {
+trait BinaryDecoder extends Logging {
   def rawbytes(raw:ByteBuffer) = {
     val buffer = new Array[Byte](raw.remaining())
     raw.get(buffer, 0, raw.remaining())
     buffer
   }
-  def cell(raw:ByteBuffer) = ByteBuffer.wrap(bytes(raw, raw.getInt))
+  def cell(raw:ByteBuffer) = {
+    val size = raw.getInt
+    if (size < 0) {
+      ByteBuffer.allocate(0)
+    } else {
+      val data = bytes(raw,size)
+      log.debug(s"read $size bytes column: ${Hex.encodeHexString(data)}")
+      ByteBuffer.wrap(data)
+    }
+  }
   def bytes(raw:ByteBuffer) = {
     val length = raw.getShort
     val buffer = new Array[Byte](length)
