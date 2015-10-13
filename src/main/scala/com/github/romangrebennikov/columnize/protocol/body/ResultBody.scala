@@ -80,12 +80,18 @@ object ResultBody extends BinaryDecoder {
     }
   }
 
+  case class SetKeyspace(keyspace:String) extends Result
+  object SetKeyspace extends BinaryDecoder {
+    def apply(raw:ByteBuffer) = new SetKeyspace(string(raw))
+  }
+
   def apply(raw:ByteBuffer):Body = {
     val buffer = raw.slice()
     buffer.getInt match {
       case 0x0001 => ResultBody(Void)
       case 0x0002 => ResultBody(Rows(buffer))
-      case _ => throw new NotImplementedError()
+      case 0x0003 => ResultBody(SetKeyspace(buffer))
+      case _ => ???
     }
   }
 }
