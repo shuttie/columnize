@@ -53,16 +53,23 @@ object ResultBody extends BinaryDecoder {
   }
 
   case class Row(columns:Seq[CQL.Value])
+  object Row {
+    def apply(raw:ByteBuffer, tableSpecOption: Option[TableSpec]) = tableSpecOption match {
+      case Some(tableSpec) => new Row(tableSpec.columns.map(_.xtype.deserialize(raw)))
+      case None => ???
+    }
+  }
 
   sealed trait Result
   case object Void extends Result
   case class Rows(meta:Metadata, rowsCount:Int, rowsContent:Seq[Row]) extends Result
   object Rows {
-    def apply(raw:ByteBuffer) = new Rows(
-      meta = Metadata(raw),
-      rowsCount = raw.getInt,
-      rowsContent = Nil
-    )
+    def apply(raw:ByteBuffer) = {
+      val meta = Metadata(raw)
+      val count = raw.getInt()
+      val rows = for (i <- 0 until count) yield { Row(raw, meta.tableSpec) }
+      new Rows(meta, count, rows)
+    }
   }
 
   def apply(raw:ByteBuffer):Body = {

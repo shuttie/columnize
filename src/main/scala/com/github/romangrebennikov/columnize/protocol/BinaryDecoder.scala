@@ -14,7 +14,16 @@ trait BinaryDecoder {
     raw.get(buffer, 0, length)
     buffer
   }
+  def bytes(raw:ByteBuffer, n:Int) = {
+    val buffer = new Array[Byte](n)
+    raw.get(buffer, 0, n)
+    buffer
+  }
   def short(raw:ByteBuffer) = raw.getShort
+  def ushort(raw:ByteBuffer) = {
+    val length: Int = (raw.get & 0xFF) << 8
+    length | (raw.get & 0xFF)
+  }
   def int(raw:ByteBuffer) = raw.getInt
   def string(raw:ByteBuffer) = {
     val length = raw.getShort

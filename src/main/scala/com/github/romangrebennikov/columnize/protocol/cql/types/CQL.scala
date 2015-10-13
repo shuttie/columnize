@@ -16,7 +16,7 @@ import org.joda.time.DateTime
  */
 object CQL {
   trait Type {
-    def deserialize(raw:ByteBuffer)
+    def deserialize(raw:ByteBuffer):Value
   }
   trait Value {
     def serialize = ???
