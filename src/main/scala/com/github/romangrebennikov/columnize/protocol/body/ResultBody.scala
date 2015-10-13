@@ -53,9 +53,9 @@ object ResultBody extends BinaryDecoder {
   }
 
   case class Row(columns:Seq[CQL.Value])
-  object Row {
+  object Row extends BinaryDecoder {
     def apply(raw:ByteBuffer, tableSpecOption: Option[TableSpec]) = tableSpecOption match {
-      case Some(tableSpec) => new Row(tableSpec.columns.map(_.xtype.deserialize(raw)))
+      case Some(tableSpec) => new Row(tableSpec.columns.map(_.xtype.deserialize(cell(raw))))
       case None => ???
     }
   }

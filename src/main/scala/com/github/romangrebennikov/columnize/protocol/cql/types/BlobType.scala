@@ -13,5 +13,5 @@ case object BlobType extends CQL.Type {
 }
 case class BlobValue(data:Array[Byte]) extends CQL.Value
 object BlobValue extends BinaryDecoder {
-  def apply(raw:ByteBuffer) = new BlobValue(bytes(raw))
+  def apply(raw:ByteBuffer) = new BlobValue(raw.array())
 }

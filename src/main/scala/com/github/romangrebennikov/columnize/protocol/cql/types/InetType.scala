@@ -15,5 +15,5 @@ case object InetType extends CQL.Type {
 
 case class InetValue(data:InetAddress) extends CQL.Value
 object InetValue extends BinaryDecoder {
-  def apply(raw:ByteBuffer) = new InetValue(InetAddress.getByAddress(bytes(raw)))
+  def apply(raw:ByteBuffer) = new InetValue(InetAddress.getByAddress(raw.array()))
 }

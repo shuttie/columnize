@@ -8,6 +8,7 @@ import com.github.romangrebennikov.columnize.protocol.cql.types._
  * Created by shutty on 10/12/15.
  */
 trait BinaryDecoder {
+  def cell(raw:ByteBuffer) = ByteBuffer.wrap(bytes(raw, raw.getInt))
   def bytes(raw:ByteBuffer) = {
     val length = raw.getShort
     val buffer = new Array[Byte](length)
@@ -51,7 +52,7 @@ trait BinaryDecoder {
     (for (i <- 0 until length) yield { string(raw) }).toList
   }
   def option(raw:ByteBuffer):CQL.Type = short(raw) match {
-    case 0x0000 => CustomType(string(raw))
+    //case 0x0000 => CustomType(string(raw))
     case 0x0001 => TextType
     case 0x0002 => BigintType
     case 0x0003 => BlobType

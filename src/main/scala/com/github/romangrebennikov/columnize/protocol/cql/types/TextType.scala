@@ -15,7 +15,6 @@ case object TextType extends CQL.Type {
 case class TextValue(data:String) extends CQL.Value
 object TextValue extends BinaryDecoder {
   def apply(raw:ByteBuffer) = {
-    val text = string(raw)
-    new TextValue(text)
+    new TextValue(new String(raw.array()))
   }
 }

@@ -12,7 +12,7 @@ case object BooleanType extends CQL.Type {
 }
 case class BooleanValue(data:Boolean) extends CQL.Value
 object BooleanValue extends BinaryDecoder {
-  def apply(raw:ByteBuffer) =  short(raw) match {
+  def apply(raw:ByteBuffer) =  raw.get() match {
     case 0 => new BooleanValue(false)
     case 1 => new BooleanValue(true)
     case _ => ???
