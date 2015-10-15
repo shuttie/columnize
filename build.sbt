@@ -19,3 +19,5 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.5" % "test"
 libraryDependencies += "joda-time" % "joda-time" % "2.8.2"
 
 libraryDependencies += "commons-codec" % "commons-codec" % "1.10"
+
+libraryDependencies += "org.parboiled" %% "parboiled" % "2.1.0"

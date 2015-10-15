@@ -25,7 +25,7 @@ object ResultBody extends BinaryDecoder {
   }
   case class ColumnSpec(name:String, xtype:CQL.Type)
   case class TableSpec(keyspace:Option[String], table:Option[String], columns:Seq[ColumnSpec])
-  object TableSpec {
+  object TableSpec extends BinaryDecoder {
     def apply(raw:ByteBuffer, columnsCount:Int, isGlobal:Boolean) = {
       val keyspace = if (isGlobal) Some(string(raw)) else None
       val table = if (isGlobal) Some(string(raw)) else None
@@ -40,7 +40,7 @@ object ResultBody extends BinaryDecoder {
 
 
   case class Metadata(flags:ResultFlags, columnsCount:Int, pagingState:Option[String], tableSpec:Option[TableSpec])
-  object Metadata {
+  object Metadata extends BinaryDecoder {
     def apply(raw:ByteBuffer) = {
       val flags = ResultFlags(raw.getInt)
       val columnCount = raw.getInt
