@@ -25,7 +25,10 @@ class CreateTableSpec extends WordSpecLike with MustMatchers with ParserErrorPri
       assert(parse("foo int, baz text static").ColumnListTest.run() == Success(Seq(Column("foo", "int"), Column("baz", "text", static = true))))
     }
     "parse full table specs" in {
-      assert(parse("create table foo (bar int, baz text, primary key (bar))").InputLine.run() == Success(Table("foo",Vector(Column("bar","int",false,false), Column("baz","text",false,false), Key(List("bar"),List())))))
+      assert(parse("create table foo (bar int, baz text, primary key (bar))").InputLine.run() == Success(Table("foo",Vector(Column("bar","int"), Column("baz","text"), Key(List("bar"),List())))))
+    }
+    "parse tables with clustering keys" in {
+      assert(parse("create table foo (bar int, baz text, qux text, primary key (bar,baz))").InputLine.run() == Success(Table("foo",Vector(Column("bar","int"), Column("baz","text"), Column("qux","text"), Key(List("bar"),List("baz"))))))
     }
   }
 
