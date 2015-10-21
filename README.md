@@ -4,8 +4,8 @@ A proof-of-concept project to build a transparent proxy for Cassandra, convertin
 and queries to columnar format. It may be useful for analytical queries requiring massive data scans (and Cassandra is not
 really efficient for multi-row scans compared to Parquet/Avro).
 
-Keep in mind that this project is work-in-progress and it's main target is to prove that external columnar storage inside 
-C* is more efficient for analytical workload than plain old C* tables.
+Keep in mind that this project is work-in-progress (read: **DO NOT USE IT IN PRODUCTION**) and it's main target is to prove that external columnar storage inside 
+C* is more efficient for analytical workload than plain old C* tables. 
 
 ## How it works
 
