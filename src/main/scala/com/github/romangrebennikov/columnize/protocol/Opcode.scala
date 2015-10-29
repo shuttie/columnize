@@ -35,4 +35,22 @@ object Opcode {
     case 0x0d => BATCH
     case other:Any => throw new IllegalArgumentException(s"unsupported opcode: $other")
   }
+
+  implicit class OpcodeBinary(val opcode:OP) {
+    def toBinary:Byte = opcode match {
+      case ERROR => 0x00
+      case STARTUP => 0x01
+      case READY => 0x02
+      case AUTHENTICATE => 0x03
+      case OPTIONS => 0x05
+      case SUPPORTED => 0x06
+      case QUERY => 0x07
+      case RESULT => 0x08
+      case PREPARE => 0x09
+      case EXECUTE => 0x0a
+      case REGISTER => 0x0b
+      case EVENT => 0x0c
+      case BATCH => 0x0d
+    }
+  }
 }

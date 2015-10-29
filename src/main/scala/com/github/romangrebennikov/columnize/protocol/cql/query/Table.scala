@@ -1,5 +1,10 @@
 package com.github.romangrebennikov.columnize.protocol.cql.query
 
+import com.github.romangrebennikov.columnize.protocol.cql.query.parser.CreateTableParser
+import com.github.romangrebennikov.columnize.tools.Logging
+
+import scala.util.{Failure, Success}
+
 /**
  * Created by shutty on 10/14/15.
  */
@@ -20,5 +25,17 @@ case class Table(name:String, elements:Seq[Element]) {
       case _ => Nil
     }
     keys.flatMap(key => columns.find(_.name == key))
+  }
+}
+
+object Table extends Logging {
+  def apply(spec:String):Table = {
+    val parser = new CreateTableParser(spec)
+    parser.InputLine.run() match {
+      case Success(tbl) => tbl
+      case Failure(ex) =>
+        log.error("cannot parse statement", ex)
+        throw ex
+    }
   }
 }

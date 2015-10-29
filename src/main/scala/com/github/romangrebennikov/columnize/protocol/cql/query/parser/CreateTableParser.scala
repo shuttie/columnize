@@ -6,6 +6,7 @@ import org.parboiled2._
 /**
  * Created by shutty on 10/14/15.
  */
+
 class CreateTableParser(val input:ParserInput) extends Parser with CQLParser {
   def InputLine = rule { CreateTable ~ EOI }
 

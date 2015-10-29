@@ -17,5 +17,11 @@ class FlagsSpec extends WordSpecLike with MustMatchers {
     "compression and tracing" in {
       assert(Flags((0x01 | 0x08).toByte) == Flags(compression = true, warning = true))
     }
+    "serialize simple flags" in {
+      assert(Flags(0.toByte).toBinary == 0)
+      val tftf = new Flags(true, false, true, false)
+      assert(tftf.toBinary == 5.toByte)
+      assert(Flags(tftf.toBinary) == tftf)
+    }
   }
 }

@@ -8,7 +8,9 @@ import com.github.romangrebennikov.columnize.protocol.cql.types._
 /**
  * Created by shutty on 10/5/15.
  */
-trait Body
+trait Body {
+  def toBinary:ByteBuffer = ???
+}
 case object EmptyBody extends Body
 
 object Body {
